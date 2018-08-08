@@ -109,9 +109,6 @@ public class ContactApp {
         for (String key : contacts.keySet()) {
             System.out.println(key.substring(0,1).toUpperCase() + key.substring(1) + " | " + contacts.get(key));
         }
-        for (String last : lastName.keySet()){
-            System.out.println(last + " | " + lastName.get(last));
-        }
     }
 
     public static void searchContacts() {
