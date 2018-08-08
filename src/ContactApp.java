@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 
 public class ContactApp {
 
+    public static HashMap<String, String> contacts = new HashMap<String, String>();
+
+
     public static void main(String[] args) {
         addDirectory();
         options();
@@ -28,8 +31,10 @@ public class ContactApp {
                 viewContacts();
                 break;
             case 2:
+
                 break;
             case 3:
+                searchContacts();
                 break;
             case 4:
                 break;
@@ -64,12 +69,13 @@ public class ContactApp {
                 e.printStackTrace();
             }
         }
+
+        createContacts();
     }
 
-    public static void viewContacts() {
+    public static void createContacts() {
         String filePath = "data/contacts.txt";
 
-        HashMap<String, String> contacts = new HashMap<String, String>();
         try {
             FileReader io = new FileReader(filePath);
             BufferedReader reader = new BufferedReader(io);
@@ -77,47 +83,36 @@ public class ContactApp {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(":", 2);
-                if (parts.length >= 2) {
-                    String key = parts[0];
+                if (parts.length >= 2)
+                {
+                    String key = parts[0].toLowerCase();
                     String value = parts[1];
                     contacts.put(key, value);
                 }
-            }
-            for (String key : contacts.keySet()) {
-                System.out.println(key + " | " + contacts.get(key));
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
 
-        public static void searchName () {
-            String filePath = "data/contacts.txt";
 
-            HashMap<String, String> contacts = new HashMap<String, String>();
-            try {
-                FileReader io = new FileReader(filePath);
-                BufferedReader reader = new BufferedReader(io);
+    public static void viewContacts() {
 
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] parts = line.split(":", 2);
-                    if (parts.length >= 2) {
-                        String key = parts[0];
-                        String value = parts[1];
-                        contacts.put(key, value);
-                    }
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        for (String key : contacts.keySet()) {
+            System.out.println(key.substring(0,1).toUpperCase() + key.substring(1) + " | " + contacts.get(key));
 
 
         }
+
+    }
+
+    public static void searchContacts() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Please enter the name you would like to search for.");
+        String name = input.nextLine().trim().toLowerCase();
+        System.out.println(contacts.get(name));
     }
 
 }
-
-
