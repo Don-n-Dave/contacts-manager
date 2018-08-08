@@ -24,15 +24,15 @@ public class ContactApp {
 
         public static void options() {
 
-            Scanner input = new Scanner(System.in);
+
             System.out.println("1. View  Contacts. \n" +
                                "2. Add a new contact.\n" +
                                "3. Search a contact by name.\n" +
                                "4. Delete an existing contact.\n" +
-                               "5. Exit.\n" +
+                               "5. Exit.\n\n" +
                                "Enter an option (1, 2, 3, 4, or 5):");
 
-            switch(input.nextInt()) {
+            switch(getInt()) {
             case 1:
                 viewContacts();
                 break;
@@ -134,9 +134,10 @@ public class ContactApp {
             }
 
             List<String> newList = new ArrayList<>();
+        String delete = input.nextLine().trim();
         for (String line : contacts) {
-            if (line.equals(input.next().trim())) {
-                newList.add(" ");
+            if (line.equals(delete)) {
+                newList.add("");
                 continue;
             }
             newList.add(line);
@@ -151,7 +152,6 @@ public class ContactApp {
         catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("hi there!");
     }
 
     public static void addContacts() {
@@ -178,9 +178,22 @@ public class ContactApp {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public static int getInt(){
 
-
+        Scanner sc = new Scanner(System.in);
+        while(true){
+            String input = sc.nextLine();
+            try{
+                Integer.valueOf(input);
+                return Integer.valueOf(input);
+            }
+            catch (NumberFormatException e){
+                System.out.println("Sorry but that is not a valid integer!\n" +
+                        "Please try again!");
+            }
+        }
     }
 
 }
