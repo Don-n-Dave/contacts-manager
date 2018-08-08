@@ -1,9 +1,13 @@
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.HashMap;
 import java.io.BufferedReader;
+//import java.util.*;
 
 public class ContactApp {
 
@@ -11,9 +15,11 @@ public class ContactApp {
 
 
     public static void main(String[] args) {
-        addDirectory();
-        options();
+        while (true) {
+           addDirectory();
+           options();
         }
+    }
 
 
         public static void options() {
@@ -31,12 +37,13 @@ public class ContactApp {
                 viewContacts();
                 break;
             case 2:
-
+                addContacts();
                 break;
             case 3:
                 searchContacts();
                 break;
             case 4:
+                deleteContacts();
                 break;
             case 5:
                 System.out.println("Have a nice day");
@@ -113,6 +120,67 @@ public class ContactApp {
         System.out.println("Please enter the name you would like to search for.");
         String name = input.nextLine().trim().toLowerCase();
         System.out.println(contacts.get(name));
+    }
+
+    public static void deleteContacts() {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Please enter contact you wish to delete.");
+        List<String> contacts = null;
+        try {
+            contacts = Files.readAllLines(Paths.get("data", "contacts.txt"));
+            }
+            catch (IOException e) {
+            e.printStackTrace();
+            }
+
+            List<String> newList = new ArrayList<>();
+        for (String line : contacts) {
+            if (line.equals(input.next().trim())) {
+                newList.add(" ");
+                continue;
+            }
+            newList.add(line);
+
+        }
+
+        try {
+            Files.write(Paths.get("data", "contacts.txt"), newList);
+
+        }
+
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("hi there!");
+    }
+
+    public static void addContacts() {
+        Scanner input = new Scanner(System.in);
+
+        String name = "";
+        String number = "";
+
+        System.out.println("Please enter new name.");
+        name = input.nextLine();
+
+        System.out.println("Please enter new contact number.");
+        number = input.next();
+
+        String contact = name + ":" + number;
+
+        try {
+            Files.write(
+                    Paths.get("data", "contacts.txt"),
+                    Arrays.asList(contact),
+                    StandardOpenOption.APPEND
+            );
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
 }
