@@ -1,17 +1,14 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.List;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.*;
 import java.io.BufferedReader;
-//import java.util.*;
 
 public class ContactApp {
 
-    public static HashMap<String, String> contacts = new HashMap<String, String>();
+    private static Map<String, String> contacts = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+    private static Map<String, String> firstName = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+    private static Map<String, String> lastName = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
 
 
     public static void main(String[] args) {
@@ -20,7 +17,6 @@ public class ContactApp {
            options();
         }
     }
-
 
         public static void options() {
 
@@ -92,10 +88,20 @@ public class ContactApp {
                 String[] parts = line.split(":", 2);
                 if (parts.length >= 2)
                 {
-                    String key = parts[0].toLowerCase();
+                    String key = parts[0];
                     String value = parts[1];
                     contacts.put(key, value);
+                    for(String name : parts){
+                        String[] names = name.split(" ",2);
+                        if(names.length >= 2){
+                            String first = names[0];
+                            String last = names[1];
+                            firstName.put(first,value);
+                            lastName.put(last,value);
+                        }
+                    }
                 }
+
             }
 
         } catch (IOException e) {
@@ -109,14 +115,23 @@ public class ContactApp {
         for (String key : contacts.keySet()) {
             System.out.println(key.substring(0,1).toUpperCase() + key.substring(1) + " | " + contacts.get(key));
         }
+        for (String last : lastName.keySet()){
+            System.out.println(last + " | " + lastName.get(last));
+        }
 
     }
 
     public static void searchContacts() {
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter the name you would like to search for.");
-        String name = input.nextLine().trim().toLowerCase();
-        System.out.println(contacts.get(name));
+        String name = input.nextLine().trim();
+        if(contacts.containsKey(name))
+        {
+            System.out.println(contacts.get(name));
+        }
+        else {
+            System.out.println("Sorry, there is no record for " + name +"!");
+        }
     }
 
     public static void deleteContacts() {
@@ -154,14 +169,11 @@ public class ContactApp {
     public static void addContacts() {
         Scanner input = new Scanner(System.in);
 
-        String name = "";
-        String number = "";
-
         System.out.println("Please enter new name.");
-        name = input.nextLine();
+        String name = input.nextLine();
 
         System.out.println("Please enter new contact number.");
-        number = input.next();
+        String number = input.next();
 
         String contact = name + ":" + number;
 
@@ -177,7 +189,7 @@ public class ContactApp {
         }
     }
 
-    public static int getInt(){
+    private static int getInt(){
 
         Scanner sc = new Scanner(System.in);
         while(true){
