@@ -174,7 +174,6 @@ public class ContactApp {
 
         System.out.println("Please enter new name.");
         String name = input.nextLine().trim();
-        yesNo(name);
         String number;
 
         while(true){
@@ -223,52 +222,5 @@ public class ContactApp {
         boolean test = number.matches("[0-9]+");
         return test;
     }
-
-    public static void yesNo(String name) {
-
-        Scanner input = new Scanner(System.in);
-      if (contacts.containsKey(name)) {
-          System.out.println("There is already a person in our system by that name. Would you like to overwrite? y/n ");
-
-          String userInput = input.nextLine();
-// Do this instead
-          if(userInput.equalsIgnoreCase("y")) {
-              System.out.println("What is the new number?");
-              String number = input.next();
-              List<String> contacts = null;
-
-              try {
-                  contacts = Files.readAllLines(Paths.get("data", "contacts.txt"));
-              }
-              catch (IOException e) {
-                  e.printStackTrace();
-              }
-
-              List<String> newList = new ArrayList<>();
-
-              for (String line : contacts) {
-                  if (line.startsWith(name)) {
-                      newList.add(name + ":" + number);
-                      continue;
-                  }
-                  newList.add(line);
-              }
-
-              try {
-                  Files.write(Paths.get("data", "contacts.txt"), newList);
-
-              }
-              catch (IOException e) {
-                  e.printStackTrace();
-              }
-              createContacts();
-              options();
-          }
-
-        } else {
-          options();
-      }
-    }
-
 
 }
