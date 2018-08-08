@@ -82,7 +82,7 @@ public class ContactApp {
 
     public static void createContacts() {
         String filePath = "data/contacts.txt";
-
+        contacts.clear();
         try {
             FileReader io = new FileReader(filePath);
             BufferedReader reader = new BufferedReader(io);
@@ -104,13 +104,10 @@ public class ContactApp {
 
     }
 
-
     public static void viewContacts() {
-
+        createContacts();
         for (String key : contacts.keySet()) {
             System.out.println(key.substring(0,1).toUpperCase() + key.substring(1) + " | " + contacts.get(key));
-
-
         }
 
     }
@@ -136,7 +133,7 @@ public class ContactApp {
             List<String> newList = new ArrayList<>();
         String delete = input.nextLine().trim();
         for (String line : contacts) {
-            if (line.equals(delete)) {
+            if (line.startsWith(delete)) {
                 newList.add("");
                 continue;
             }
@@ -148,10 +145,10 @@ public class ContactApp {
             Files.write(Paths.get("data", "contacts.txt"), newList);
 
         }
-
         catch (IOException e) {
             e.printStackTrace();
         }
+        createContacts();
     }
 
     public static void addContacts() {
