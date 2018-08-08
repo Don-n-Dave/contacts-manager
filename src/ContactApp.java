@@ -19,8 +19,6 @@ public class ContactApp {
     }
 
         public static void options() {
-
-
             System.out.println("1. View  Contacts. \n" +
                                "2. Add a new contact.\n" +
                                "3. Search a contact by name.\n" +
@@ -54,7 +52,6 @@ public class ContactApp {
 
         Path dataDirectory = Paths.get(directory);
         Path dataFile = Paths.get(filePath);
-
 
         if (!Files.isDirectory(dataDirectory)) {
             try {
@@ -101,13 +98,10 @@ public class ContactApp {
                         }
                     }
                 }
-
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void viewContacts() {
@@ -118,7 +112,6 @@ public class ContactApp {
         for (String last : lastName.keySet()){
             System.out.println(last + " | " + lastName.get(last));
         }
-
     }
 
     public static void searchContacts() {
@@ -127,10 +120,20 @@ public class ContactApp {
         String name = input.nextLine().trim();
         if(contacts.containsKey(name))
         {
-            System.out.println(contacts.get(name));
+            System.out.println(name + " :   " + contacts.get(name));
+            System.out.println("If this is not the person you are looking for try searching their first or last name!");
+        }
+        else if(firstName.containsKey(name)){
+            System.out.println(name + " :   " + firstName.get(name));
+            System.out.println("If this is not the person you are looking for please try searching their last name or whole name!");
+        }
+        else if(lastName.containsKey(name)){
+            System.out.println(name + " :   " + lastName.get(name));
+            System.out.println("If this is not the person you are looking for please try searching their first name or whole name!");
         }
         else {
-            System.out.println("Sorry, there is no record for " + name +"!");
+            System.out.println("Sorry, there is no record for " + name +"!\n" +
+                    "Try looking at the list of names before searching or search using their whole name!");
         }
     }
 
@@ -138,6 +141,7 @@ public class ContactApp {
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter contact you wish to delete.");
         List<String> contacts = null;
+
         try {
             contacts = Files.readAllLines(Paths.get("data", "contacts.txt"));
             }
@@ -153,7 +157,6 @@ public class ContactApp {
                 continue;
             }
             newList.add(line);
-
         }
 
         try {
@@ -170,10 +173,10 @@ public class ContactApp {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Please enter new name.");
-        String name = input.nextLine();
+        String name = input.nextLine().trim();
 
-        System.out.println("Please enter new contact number.");
-        String number = input.next();
+        System.out.println("Please enter new contact number without any dashes ( - ).");
+        String number = input.next().trim();
 
         String contact = name + ":" + number;
 
