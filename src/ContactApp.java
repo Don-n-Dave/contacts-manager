@@ -174,9 +174,18 @@ public class ContactApp {
 
         System.out.println("Please enter new name.");
         String name = input.nextLine().trim();
+        String number;
 
-        System.out.println("Please enter new contact number without any dashes ( - ).");
-        String number = input.next().trim();
+        while(true){
+            System.out.println("Please enter new contact number without any dashes ( - ).");
+            number = input.next().trim();
+            if(!checkNumber(number)){
+                System.out.println("Please enter only numbers!");
+            }
+            else{
+                break;
+            }
+        }
 
         String contact = name + ":" + number;
 
@@ -197,6 +206,7 @@ public class ContactApp {
         Scanner sc = new Scanner(System.in);
         while(true){
             String input = sc.nextLine();
+
             try{
                 Integer.valueOf(input);
                 return Integer.valueOf(input);
@@ -206,6 +216,11 @@ public class ContactApp {
                         "Please try again!");
             }
         }
+    }
+
+    private static boolean checkNumber(String number){
+        boolean test = number.matches("[0-9]+");
+        return test;
     }
 
 }
